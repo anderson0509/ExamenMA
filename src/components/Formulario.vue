@@ -37,21 +37,36 @@ export default {
         const edad = Number(this.edad);
         const direccion = this.direccion.trim();
 
-        // Validaciones
+        // Campos obligatorios
         if (!nombre || !edad || !direccion) {
           return alert("Por favor, completa todos los campos.");
         }
 
+        // 🔹 Validar nombre
+        if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre)) {
+          return alert("El nombre solo puede contener letras y espacios (sin números ni símbolos).");
+        }
+
+        // 🔹 Validar edad
         if (isNaN(edad) || edad < 15 || edad > 80) {
           return alert("La edad debe ser un número válido entre 15 y 80.");
         }
 
-        if (!/^[a-zA-Z\s]+$/.test(nombre)) {
-          return alert("El nombre solo puede contener letras y espacios.");
+        if (!Number.isInteger(edad)) {
+          return alert("La edad debe ser un número entero (sin decimales).");
         }
 
+        // 🔹 Validar dirección
         if (direccion.length < 5) {
           return alert("La dirección debe tener al menos 5 caracteres.");
+        }
+
+        if (direccion.length > 100) {
+          return alert("La dirección no puede superar los 100 caracteres.");
+        }
+
+        if (!/^[a-zA-Z0-9\s#\-\/]+$/.test(direccion)) {
+          return alert("La dirección solo puede contener letras, números y los símbolos #, -, /.");
         }
 
         // Si todo es válido
@@ -59,7 +74,6 @@ export default {
           ` Datos recibidos:\nNombre: ${nombre}\nEdad: ${edad}\nDirección: ${direccion}`
         );
 
-        // 🧹 Limpiar los campos del formulario
         this.limpiarFormulario();
       } catch (error) {
         console.error("Error al validar el formulario:", error);
@@ -67,7 +81,6 @@ export default {
       }
     },
 
-    // Nuevo método para limpiar campos
     limpiarFormulario() {
       this.nombre = "";
       this.edad = "";
@@ -76,7 +89,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .form {
@@ -115,5 +127,8 @@ export default {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+.form button:hover {
+  background-color: #00796b;
 }
 </style>
